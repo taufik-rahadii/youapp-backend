@@ -36,7 +36,7 @@ async function bootstrap() {
     }),
   );
 
-  const swaggerConfig = new DocumentBuilder().build();
+  const swaggerConfig = new DocumentBuilder().addBearerAuth().build();
   const swaggerDoc = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api-docs', app, swaggerDoc);
 

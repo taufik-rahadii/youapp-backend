@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { UserService } from 'src/application/user/services/user.service';
 import { LoginDTO, LoginResponse } from '../dtos/login.dto';
 import { JWTPayloadDTO } from '../dtos/jwt.dto';
@@ -9,6 +9,7 @@ import { compareSync } from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) { }

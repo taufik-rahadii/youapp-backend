@@ -37,7 +37,11 @@ export class UserRepository {
   }
 
   // FindByID
-  public findById(id: string) {
-    return this.userModel.findById(id);
+  public findById(_id: string, withPassword = true) {
+    const query = this.userModel.findOne({ _id });
+
+    if (!withPassword) query.select('-password');
+
+    return query.exec();
   }
 }

@@ -2,6 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { createRandomString } from '../../../utils/createRandomString';
 import { Gender } from '../enums/gender.enum';
+import { Exclude, Expose } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -17,46 +19,86 @@ export class User {
     type: String,
     default: createRandomString(26, 'a0'),
   })
+  @ApiProperty()
+  @Expose()
   _id?: string;
 
-  @Prop()
+  @Prop({
+    default: '',
+  })
+  @ApiProperty()
+  @Expose()
   fullname?: string;
 
   @Prop()
+  @ApiProperty()
+  @Expose()
   username?: string;
 
   @Prop()
+  @Exclude()
+  @Expose()
   password: string;
 
   @Prop()
+  @ApiProperty()
+  @Expose()
   email?: string;
 
-  @Prop()
+  @Prop({
+    default: '',
+  })
+  @ApiProperty()
+  @Expose()
   gender?: Gender;
 
-  @Prop()
+  @Prop({
+    default: '',
+  })
+  @ApiProperty()
+  @Expose()
   dob?: string;
 
-  @Prop()
+  @Prop({
+    default: null,
+  })
+  @ApiProperty()
+  @Expose()
   height?: number;
 
-  @Prop()
+  @Prop({
+    default: null,
+  })
+  @ApiProperty()
+  @Expose()
   weight?: number;
 
   @Prop({
     type: String,
+    default: null,
   })
+  @ApiProperty()
+  @Expose()
   zodiac?: ZodiacAnimal;
 
   @Prop({
     type: String,
+    default: null,
   })
+  @ApiProperty()
+  @Expose()
   horoscope?: HoroscopeSign;
 
-  @Prop()
+  @Prop({
+    default: null,
+  })
+  @ApiProperty()
+  @Expose()
   avatar?: string;
 
   @Prop()
+  @ApiProperty()
+  @Expose()
   interest?: string[];
 }
 
