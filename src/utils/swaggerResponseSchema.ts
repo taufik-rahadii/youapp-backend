@@ -4,9 +4,11 @@ export const swaggerResponseSchema = (data: any) => {
     properties: {
       status: {
         type: 'string',
+        example: '0000',
       },
       message: {
         type: 'string',
+        example: 'Success',
       },
       data,
     },
