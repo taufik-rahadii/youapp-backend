@@ -1,4 +1,4 @@
-enum ZodiacAnimal {
+export enum ZodiacAnimal {
   Rat = 'Rat',
   Ox = 'Ox',
   Tiger = 'Tiger',

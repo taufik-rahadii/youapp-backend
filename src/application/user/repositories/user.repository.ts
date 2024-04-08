@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { InjectModel, Prop } from '@nestjs/mongoose';
 import { User } from '../models/user.model';
 import { Model } from 'mongoose';
 
@@ -27,13 +27,18 @@ export class UserRepository {
   }
 
   // UpdateUser
-  public updateUser(id: string, payload: User) {
-    return this.userModel.updateOne(
+  public async updateUser(_id: string, payload: Partial<User>) {
+    await this.userModel.findByIdAndUpdate(
       {
-        id,
+        _id,
       },
-      payload,
+      { ...payload },
+      { new: false },
     );
+
+    return {
+      _id,
+    };
   }
 
   // FindByID

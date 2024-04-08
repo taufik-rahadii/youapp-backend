@@ -9,14 +9,15 @@ import { RegisterDTO } from '../dtos/register.dto';
 import { User } from '../models/user.model';
 import { genSaltSync, hashSync } from 'bcrypt';
 import { UpdateUserDTO } from '../dtos/update-user.dto';
-import { StorageService } from '../../../storage/storage.service';
 import { AuthService } from 'src/application/auth/services/auth.service';
+import { UpdateProfileDTO } from '../dtos/update-profile.dto';
+import { CalculationService } from 'src/application/criterias/services/calculation.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepo: UserRepository,
-    private readonly storageService: StorageService,
+    private readonly criteriaService: CalculationService,
     @Inject(forwardRef(() => AuthService)) private authService: AuthService,
   ) { }
 
@@ -51,12 +52,13 @@ export class UserService {
     const user = await this.userRepo.findById(id);
     let avatar = user.avatar;
 
-    if (payload.avatar)
-      avatar = await this.storageService.uploadFile(payload.avatar);
+    // if (payload.avatar)
+    //   avatar = await this.storageService.uploadFile(payload.avatar);
 
     return this.userRepo.updateUser(id, {
       ...user,
       ...payload,
+
       avatar,
     });
   }
@@ -70,5 +72,31 @@ export class UserService {
     const user = await this.userRepo.findById(id, false);
 
     return user;
+  }
+
+  // updateProfile
+  public async updateProfile(userId: string, payload: UpdateProfileDTO) {
+    try {
+      const user = await this.findById(userId);
+      const { zodiac, horoscope } = {
+        zodiac: await this.criteriaService.calculateZodiacAnimal(
+          new Date(user.dob),
+        ),
+        horoscope: await this.criteriaService.calculateHoroscopeSign(
+          new Date(user.dob),
+        ),
+      };
+
+      const updated = await this.userRepo.updateUser(userId, {
+        ...payload,
+        zodiac,
+        horoscope,
+      });
+
+      return updated;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 }

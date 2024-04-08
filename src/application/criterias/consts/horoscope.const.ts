@@ -1,4 +1,4 @@
-enum HoroscopeSign {
+export enum HoroscopeSign {
   Aries = 'Aries',
   Taurus = 'Taurus',
   Gemini = 'Gemini',
@@ -13,7 +13,7 @@ enum HoroscopeSign {
   Pisces = 'Pisces',
 }
 
-const HOROSCOPE_SIGN_RANGE: {
+export const HOROSCOPE_SIGN_RANGE: {
   sign: HoroscopeSign;
   startMonth: number;
   startDay: number;

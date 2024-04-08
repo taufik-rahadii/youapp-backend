@@ -1,4 +1,6 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { ZodiacAnimal } from '../consts/zodiac.const';
+import { HOROSCOPE_SIGN_RANGE, HoroscopeSign } from '../consts/horoscope.const';
 
 @Injectable()
 export class CalculationService {
@@ -11,10 +13,12 @@ export class CalculationService {
     const animalIndex =
       (year - this.START_YEAR) % Object.keys(ZodiacAnimal).length;
 
-    return Promise.resolve(ZodiacAnimal[animalIndex] as ZodiacAnimal);
+    const zodiacs = Object.values(ZodiacAnimal);
+    const zodiac = ZodiacAnimal[zodiacs[animalIndex]];
+    return Promise.resolve(zodiac);
   }
 
-  async calculateHoroscopeSign(dob: Date): Promise<string> {
+  async calculateHoroscopeSign(dob: Date): Promise<HoroscopeSign> {
     const birthMonth = dob.getMonth() + 1;
     const birthDay = dob.getDate();
 
